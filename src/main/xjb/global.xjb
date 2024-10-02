@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" 
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               -->
+<jaxb:bindings xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+               xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"               
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:mc="http://www.3gpp.org/ftp/specs/archive/32_series/32.435#measCollec"
+               jaxb:extensionBindingPrefixes="xjc"
+               version="3.0">
+
+  <jaxb:globalBindings localScoping="toplevel">
+<!--      <xjc:javaType name="java.time.LocalDate" xmlType="xsd:date" adapter="com.monet.meascollec.commons.xml.LocalDateAdapter" />
+-->
+       <xjc:javaType name="java.time.LocalDateTime" xmlType="xsd:dateTime" adapter="biz.f43ry.meascollec.util.adapter.LocalDateTimeAdapter" />
+
+  </jaxb:globalBindings>
+  <jaxb:bindings schemaLocation="../xsd/32.435/measCollec.xsd">
+    <jaxb:bindings node="//xsd:element[@name='measCollecFile']/xsd:complexType/xsd:sequence/xsd:element[@name='fileHeader']/xsd:complexType/xsd:sequence/xsd:element[@name='measCollec']/xsd:complexType">
+      <jaxb:class name="MeasCollecBegin" />
+    </jaxb:bindings>
+
+  </jaxb:bindings>
+</jaxb:bindings>

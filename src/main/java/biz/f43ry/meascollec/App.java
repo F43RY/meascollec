@@ -1,16 +1,13 @@
-package com.monet.meascollec;
+package biz.f43ry.meascollec;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @SpringBootApplication
-public class MeascollecApplication {
+public class App {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MeascollecApplication.class, args);
+		SpringApplication.run(App.class, args);
 	}
 
 }
