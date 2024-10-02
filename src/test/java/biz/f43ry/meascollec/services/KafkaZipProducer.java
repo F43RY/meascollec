@@ -28,7 +28,7 @@ public class KafkaZipProducer {
         // Leggi il file .zip
         byte[] fileData = null;
 		try {
-			fileData = Files.readAllBytes(Paths.get("/home/fabry/git/meascollec/schemas/xml/A20190404.1545+0200-1600+0200_SubNetwork=LTE_tokomc_R,MeContext=TO63T,ManagedElement=TO63T_statsfile.zip"));
+			fileData = Files.readAllBytes(Paths.get("myFile_statsfile.xml.gz"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
