@@ -38,7 +38,7 @@ public class KafkaConsumerService {
 	@KafkaListener(topics = "#{T(java.util.Arrays).asList('${kafka.topics.name}'.split(','))}", groupId = "${kafka.consumer-group-id}")
 	public void consume(ConsumerRecord<String, byte[]> consumerRecord) {
 
-
+		log.info("File elaborato: " + consumerRecord.key());
 		log.info("offset: {}", consumerRecord.offset());
 		if(consumerRecord.value() == null) {
 			log.warn("Value vuoto");

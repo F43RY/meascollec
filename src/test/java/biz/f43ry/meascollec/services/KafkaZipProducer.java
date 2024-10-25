@@ -1,5 +1,7 @@
 package biz.f43ry.meascollec.services;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,38 +9,51 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.assertj.core.util.Arrays;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.kafka.core.KafkaTemplate;
 
-import lombok.extern.slf4j.Slf4j;
+import jakarta.annotation.PreDestroy;
 
-@Slf4j
 @SpringBootTest
 public class KafkaZipProducer {
-	
-	@Test
-    void produceMessagemain() {
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:29092");
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 
-        KafkaProducer<String, byte[]> producer = new KafkaProducer<>(props);
-        
-        // Leggi il file .zip
-        byte[] fileData = null;
+    @Value("classpath:xml/myItem_statsfile.gz")
+    private Resource resource;
+    
+    @Value("${kafka.topics.name}")
+    private String topic;
+    
+    @Autowired
+    Properties props;
+    
+    @Autowired
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
+
+    @Test
+    void sendMessage() {
+    	
+    	byte[] content = null;
 		try {
-			fileData = Files.readAllBytes(Paths.get("myFile_statsfile.xml.gz"));
+			content = Files.readAllBytes(resource.getFile().toPath());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-        // Invia il file .zip a Kafka
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>("myTopic", fileData);
-        producer.send(record);
-        producer.close();
-        try {
+		if (content != null) {
+			kafkaTemplate.send(Arrays.asList(topic.split(",")).get(0).toString(), resource.getFilename(), content);
+		}else {
+			assertTrue(false);
+		}
+    }
+    
+    @AfterAll
+    static void cleanup() {
+    	try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

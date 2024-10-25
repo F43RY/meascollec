@@ -8,9 +8,18 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-@Document("counters")
+@Document(collection = "counters")
 public class Counter {
 	@Id
 	private String id;
 	private Hierarchy parent;
+	private CounterType type = null;
+	
+	
+	private enum CounterType{
+		incremental,
+		vector,
+		numeric,
+		gauge
+	}
 }
